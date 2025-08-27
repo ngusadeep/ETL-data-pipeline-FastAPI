@@ -1,8 +1,6 @@
-### **Repository Description**
+### **FastAPI ETL Pipeline
 
-**Repository Name:** `fastapi-etl-pipeline`
-
-**Description:**
+**Overview:**
 A FastAPI-based ETL pipeline that extracts data from CSV files, transforms it, and loads it into a PostgreSQL database. Designed for cloud-ready deployment using Docker and compatible with Neon Postgres. Includes a REST API to trigger the ETL process and monitor the pipeline.
 
 **Features:**
