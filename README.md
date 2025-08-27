@@ -116,5 +116,3 @@ fastapi-etl-pipeline/
 ## License
 
 MIT License
-
-```
