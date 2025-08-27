@@ -8,7 +8,7 @@ from app.config import RAW_FILE_PATH, TABLE_NAME
 def run_etl_pipeline() -> dict:
     """
     Runs the full ETL pipeline: extract → transform → load.
-    Returns information about the load (e.g., number of rows).
+    Returns information about the load (number of new rows inserted).
     """
     try:
         logger.info("ETL pipeline started")
@@ -23,10 +23,9 @@ def run_etl_pipeline() -> dict:
 
         # --- Load ---
         engine = get_postgres_engine()
-        load_data_to_db(transformed_data, TABLE_NAME, engine)
+        rows_loaded = load_data_to_db(transformed_data, TABLE_NAME, engine)
 
-        rows_loaded = len(transformed_data)
-        logger.info(f"ETL pipeline completed successfully, {rows_loaded} rows loaded to {TABLE_NAME}")
+        logger.info(f"ETL pipeline completed successfully, {rows_loaded} new rows loaded to {TABLE_NAME}")
 
         return {"rows_loaded": rows_loaded}
 
