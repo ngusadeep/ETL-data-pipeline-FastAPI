@@ -1,26 +1,27 @@
 import pandas as pd
 
 def transform_data(data: pd.DataFrame) -> pd.DataFrame:
-    """Apply transformations to clean and enrich data."""
+    """
+    Apply transformations to clean and enrich sales data.
 
-    # Validate numeric columns exist
+    - Validates required numeric columns.
+    - Rounds numeric values.
+    - Categorizes sales into Low, Medium, High.
+    """
+    # Required numeric columns
     required_cols = ['Sales_Amount', 'Unit_Price', 'Unit_Cost']
-    for col in required_cols:
-        if col not in data.columns:
-            raise ValueError(f"Missing required column: {col}")
+    missing_cols = [col for col in required_cols if col not in data.columns]
+    if missing_cols:
+        raise ValueError(f"Missing required columns: {missing_cols}")
 
-    # Round values
-    data['Sales_Amount'] = data['Sales_Amount'].round(0)
-    data['Unit_Price'] = data['Unit_Price'].round(0)
-    data['Unit_Cost'] = data['Unit_Cost'].round(0)
+    # Round numeric values
+    data[required_cols] = data[required_cols].round(0)
 
-
-    # Example: categorize by sales amount
+    # Categorize sales
     data['Sales_Category'] = pd.cut(
         data['Sales_Amount'],
         bins=[0, 100, 200, float('inf')],
         labels=['Low', 'Medium', 'High']
     )
 
-    print("Transformations applied.")
     return data
