@@ -6,8 +6,13 @@ A cloud-ready ETL pipeline built with **FastAPI** that extracts CSV data, transf
 ## Features
 
 - Extract data from CSV files
+<<<<<<< HEAD
 - Transform and clean data using Pandas
 - Load data into PostgreSQL (Neon-compatible)
+=======
+- Transform and clean data
+- Load data into PostgreSQL tables for every 3 minutes
+>>>>>>> 40a4403d9ffca68d54673be495c4a1d56a90c533
 - REST API endpoints:
   - `/` → Health check
   - `/run-etl` → Trigger the ETL pipeline
