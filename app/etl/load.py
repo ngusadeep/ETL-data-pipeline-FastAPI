@@ -10,24 +10,29 @@ def load_data_to_db(df: pd.DataFrame, table_name: str = TABLE_NAME, engine: Engi
         logger.info("No data to load.")
         return 0
 
+    # Always normalize column names
+    df.columns = [col.lower().replace(" ", "_") for col in df.columns]
+
+    # Get existing rows (normalized)
     with engine.connect() as conn:
-        try:
-            existing = pd.read_sql(text(f'SELECT * FROM {table_name}'), conn)
-            if not existing.empty:
-                existing.columns = [col.lower() for col in existing.columns]
-                # Use specific columns for identifying duplicates
-                merge_cols = ['sales_amount', 'unit_price', 'unit_cost']
-                merged = pd.merge(df, existing, on=merge_cols, how='left', indicator=True)
-                new_rows = merged[merged['_merge'] == 'left_only'].drop(columns=['_merge'])
-            else:
-                new_rows = df
-        except Exception as e:
-            # Handle case where table doesn't exist yet
-            if "does not exist" in str(e):
-                logger.info(f"Table '{table_name}' does not exist. Creating it.")
-                new_rows = df
-            else:
-                raise e
+        existing = pd.read_sql(
+            text(f"SELECT sales_amount, unit_price, unit_cost FROM {table_name}"), 
+            conn
+        )
+        existing.columns = [col.lower().replace(" ", "_") for col in existing.columns]
+
+    # Merge to keep only new rows
+    if not existing.empty:
+        merged = pd.merge(
+            df, 
+            existing, 
+            on=['sales_amount', 'unit_price', 'unit_cost'], 
+            how='left', 
+            indicator=True
+        )
+        new_rows = merged[merged['_merge'] == 'left_only'].drop(columns=['_merge'])
+    else:
+        new_rows = df
 
     # Insert only new rows
     if not new_rows.empty:

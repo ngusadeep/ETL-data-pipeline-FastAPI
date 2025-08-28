@@ -2,8 +2,8 @@ import pandas as pd
 import uuid
 
 def transform_data(data: pd.DataFrame) -> pd.DataFrame:
-    # Standardize column names to lowercase
-    data.columns = [col.lower() for col in data.columns]
+    # Standardize column names to lowercase snake_case
+    data.columns = [col.lower().replace(" ", "_") for col in data.columns]
 
     # Remove duplicated columns from merges (keep only "_x" versions)
     for col in data.columns:
