@@ -32,7 +32,7 @@ A cloud-ready ETL pipeline built with **FastAPI** that extracts CSV data, transf
 
 - Extract data from CSV files
 - Transform and clean data
-- Load data into PostgreSQL tables
+- Load data into PostgreSQL tables for every 3 minutes
 - REST API endpoints:
   - `/` - Health check
   - `/run-etl` - Trigger the ETL pipeline
